@@ -11,6 +11,7 @@ import me.q1zz.spaceis.sdk.exception.SpaceIsSdkException;
 import me.q1zz.spaceis.sdk.modal.DiscountCode;
 import me.q1zz.spaceis.sdk.modal.License;
 import me.q1zz.spaceis.sdk.modal.SpaceIsResponse;
+import me.q1zz.spaceis.sdk.modal.Subpage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -110,6 +111,13 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
     public SpaceIsResponse<DiscountCode> getDiscountCode(@NotNull String code) throws NotFoundException {
         return this.sendRequest("/discount_code/" + code, HttpMethod.GET, null, DiscountCode.class, Map.of(
                 404, new NotFoundException("discount code not found!")
+        ));
+    }
+
+    @Override
+    public @NotNull SpaceIsResponse<Subpage> getSubpage(@NotNull String slug) throws NotFoundException {
+        return this.sendRequest("/subpage" + slug, HttpMethod.GET, null, Subpage.class, Map.of(
+                404, new NotFoundException("subpage not found!")
         ));
     }
 
