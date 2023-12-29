@@ -1,9 +1,6 @@
 package me.q1zz.spaceis.sdk;
 
-import me.q1zz.spaceis.sdk.modal.DiscountCode;
-import me.q1zz.spaceis.sdk.modal.License;
-import me.q1zz.spaceis.sdk.modal.SpaceIsResponse;
-import me.q1zz.spaceis.sdk.modal.Subpage;
+import me.q1zz.spaceis.sdk.modal.*;
 import org.jetbrains.annotations.NotNull;
 
 public interface SpaceIsSdk {
@@ -16,5 +13,11 @@ public interface SpaceIsSdk {
 
     @NotNull
     SpaceIsResponse<Subpage> getSubpage(@NotNull String slug);
+
+    @NotNull
+    SpaceIsResponse<DailyReward> getDailyReward();
+
+    @NotNull
+    SpaceIsResponse<Void> redeemDailyReward(@NotNull String nick, @NotNull String recaptchaToken);
 
 }
