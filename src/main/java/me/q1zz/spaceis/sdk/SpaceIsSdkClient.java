@@ -104,7 +104,7 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
 
     @Override
     public @NotNull SpaceIsResponse<Subpage> getSubpage(@NotNull String slug) throws NotFoundException {
-        return this.sendRequest("/subpage" + slug, HttpMethod.GET, Subpage.class, null, Map.of(
+        return this.sendRequest("/subpage/" + slug, HttpMethod.GET, Subpage.class, null, Map.of(
                 404, new NotFoundException("subpage not found!")
         ));
     }
