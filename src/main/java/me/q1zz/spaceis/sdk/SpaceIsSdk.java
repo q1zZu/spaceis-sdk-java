@@ -3,6 +3,8 @@ package me.q1zz.spaceis.sdk;
 import me.q1zz.spaceis.sdk.modal.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 public interface SpaceIsSdk {
 
     @NotNull
@@ -19,5 +21,14 @@ public interface SpaceIsSdk {
 
     @NotNull
     SpaceIsResponse<Void> redeemDailyReward(@NotNull String nick, @NotNull String recaptchaToken);
+
+    @NotNull
+    SpaceIsResponse<TransactionDetails> getTransactionDetails(@NotNull UUID transactionId);
+
+    @NotNull
+    SpaceIsResponse<Transaction> initTransaction(@NotNull TransactionRequest transactionRequest);
+
+    @NotNull
+    SpaceIsResponse<Void> approveTransaction(@NotNull UUID transactionId);
 
 }

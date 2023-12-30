@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class SpaceIsSdkClient implements SpaceIsSdk {
 
@@ -124,6 +125,28 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
                         400, new DailyRewardWrongRecaptchaTokenException("Invalid recaptcha token!"),
                         404, new DailyRewardDisabledException("Daily reward is disabled!"),
                         403, new DailyRewardAlreadyReceivedException("Daily reward for this nickname is already received!")));
+    }
+
+    @Override
+    public @NotNull SpaceIsResponse<TransactionDetails> getTransactionDetails(@NotNull UUID transactionId) throws NotFoundException {
+        return this.sendRequest("/transaction/info/" + transactionId, HttpMethod.GET, null, TransactionDetails.class, Map.of(
+                404, new NotFoundException("Transaction not found!")
+        ));
+    }
+
+    @Override
+    public @NotNull SpaceIsResponse<Transaction> initTransaction(@NotNull TransactionRequest transactionRequest) throws TransactionInitException {
+        return this.sendRequest("/transaction/variantPayment", HttpMethod.POST, transactionRequest, Transaction.class, Map.of(
+                403, new TransactionInitException("Sms code already used!"),
+                404, new TransactionInitException("Invalid sms code!")
+        ));
+    }
+
+    @Override
+    public @NotNull SpaceIsResponse<Void> approveTransaction(@NotNull UUID transactionId) throws TransactionApproveException {
+        return this.sendRequest(String.format("/transaction/%s/approve", transactionId), HttpMethod.POST, null, Void.class, Map.of(
+            400, new TransactionApproveException("Transaction already approved!")
+        ));
     }
 
 
