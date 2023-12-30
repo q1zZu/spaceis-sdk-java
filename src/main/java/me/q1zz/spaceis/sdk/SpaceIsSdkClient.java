@@ -5,12 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import kong.unirest.*;
 import me.q1zz.spaceis.sdk.adapter.BooleanAdapter;
-import me.q1zz.spaceis.sdk.exception.NotFoundException;
-import me.q1zz.spaceis.sdk.exception.RateLimitException;
-import me.q1zz.spaceis.sdk.exception.SpaceIsSdkException;
-import me.q1zz.spaceis.sdk.modal.DiscountCode;
-import me.q1zz.spaceis.sdk.modal.License;
-import me.q1zz.spaceis.sdk.modal.SpaceIsResponse;
+import me.q1zz.spaceis.sdk.exception.*;
+import me.q1zz.spaceis.sdk.modal.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -104,5 +100,31 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
                 404, new NotFoundException("discount code not found!")
         ));
     }
+
+    @Override
+    public @NotNull SpaceIsResponse<Subpage> getSubpage(@NotNull String slug) throws NotFoundException {
+        return this.sendRequest("/subpage" + slug, HttpMethod.GET, null, Subpage.class, Map.of(
+                404, new NotFoundException("subpage not found!")
+        ));
+    }
+
+    @Override
+    public @NotNull SpaceIsResponse<DailyReward> getDailyReward() throws DailyRewardDisabledException {
+        return this.sendRequest("/daily_reward", HttpMethod.GET, null, DailyReward.class, Map.of(
+                404, new DailyRewardDisabledException("Daily reward is disabled!")
+        ));
+    }
+
+    @Override
+    public @NotNull SpaceIsResponse<Void> redeemDailyReward(@NotNull String nick, @NotNull String recaptchaToken) throws DailyRewardDisabledException, DailyRewardAlreadyReceivedException, DailyRewardWrongRecaptchaTokenException {
+        return this.sendRequest("/daily_reward", HttpMethod.POST, Map.of(
+                        "nick", nick,
+                        "recaptchaToken", recaptchaToken
+                ), Void.class, Map.of(
+                        400, new DailyRewardWrongRecaptchaTokenException("Invalid recaptcha token!"),
+                        404, new DailyRewardDisabledException("Daily reward is disabled!"),
+                        403, new DailyRewardAlreadyReceivedException("Daily reward for this nickname is already received!")));
+    }
+
 
 }
