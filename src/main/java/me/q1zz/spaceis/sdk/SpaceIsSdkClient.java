@@ -46,7 +46,7 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
                 .create();
     }
 
-    private <T> T sendRequest(@NotNull String path, @NotNull HttpMethod method, @Nullable Object body, @NotNull Type responseType, @NotNull Map<Integer, SpaceIsSdkException> responseActions) throws SpaceIsSdkException {
+    private <T> T sendRequest(@NotNull String path, @NotNull HttpMethod method, @NotNull Type responseType, @Nullable Object body, @NotNull Map<Integer, SpaceIsSdkException> responseActions) throws SpaceIsSdkException {
 
         final HttpResponse<JsonNode> response = switch (method.name()) {
             case "GET" -> this.unirest.get(path)
@@ -75,53 +75,54 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
         return this.gson.fromJson(responseData.toString(), responseType);
     }
 
-    private <T> SpaceIsResponse<T> sendRequest(@NotNull String path, @NotNull HttpMethod method, @Nullable Object body, @NotNull Class<T> responseType, @NotNull Map<Integer, SpaceIsSdkException> responseActions) throws SpaceIsSdkException {
+    private <T> SpaceIsResponse<T> sendRequest(@NotNull String path, @NotNull HttpMethod method, @NotNull Class<T> responseType, @Nullable Object body, @NotNull Map<Integer, SpaceIsSdkException> responseActions) throws SpaceIsSdkException {
 
         final TypeToken<?> spaceIsResponse = TypeToken.getParameterized(SpaceIsResponse.class, responseType);
         final Type spaceIsResponseType = spaceIsResponse.getType();
 
-        return this.sendRequest(path, method, body, spaceIsResponseType, responseActions);
+        return this.sendRequest(path, method, spaceIsResponseType, body, responseActions);
     }
 
-    private <T> SpaceIsResponse<T> sendRequest(@NotNull String path, @NotNull HttpMethod method, @Nullable Object body, @NotNull Class<T> responseType) throws SpaceIsSdkException {
-        return this.sendRequest(path, method, body, responseType, new HashMap<>());
+    private <T> SpaceIsResponse<T> sendRequest(@NotNull String path, @NotNull HttpMethod method, @NotNull Class<T> responseType, @Nullable Object body) throws SpaceIsSdkException {
+        return this.sendRequest(path, method, responseType, body, new HashMap<>());
     }
 
 
     @Override
     @NotNull
     public SpaceIsResponse<License> getLicense() {
-        return this.sendRequest("/license", HttpMethod.GET, null, License.class);
+        return this.sendRequest("/license", HttpMethod.GET, License.class, null);
     }
 
     @Override
     @NotNull
     public SpaceIsResponse<DiscountCode> getDiscountCode(@NotNull String code) throws NotFoundException {
-        return this.sendRequest("/discount_code/" + code, HttpMethod.GET, null, DiscountCode.class, Map.of(
+        return this.sendRequest("/discount_code/" + code, HttpMethod.GET, DiscountCode.class, null, Map.of(
                 404, new NotFoundException("discount code not found!")
         ));
     }
 
     @Override
     public @NotNull SpaceIsResponse<Subpage> getSubpage(@NotNull String slug) throws NotFoundException {
-        return this.sendRequest("/subpage" + slug, HttpMethod.GET, null, Subpage.class, Map.of(
+        return this.sendRequest("/subpage" + slug, HttpMethod.GET, Subpage.class, null, Map.of(
                 404, new NotFoundException("subpage not found!")
         ));
     }
 
     @Override
     public @NotNull SpaceIsResponse<DailyReward> getDailyReward() throws DailyRewardDisabledException {
-        return this.sendRequest("/daily_reward", HttpMethod.GET, null, DailyReward.class, Map.of(
+        return this.sendRequest("/daily_reward", HttpMethod.GET, DailyReward.class, null, Map.of(
                 404, new DailyRewardDisabledException("Daily reward is disabled!")
         ));
     }
 
     @Override
     public @NotNull SpaceIsResponse<Void> redeemDailyReward(@NotNull String nick, @NotNull String recaptchaToken) throws DailyRewardDisabledException, DailyRewardAlreadyReceivedException, DailyRewardWrongRecaptchaTokenException {
-        return this.sendRequest("/daily_reward", HttpMethod.POST, Map.of(
+        return this.sendRequest("/daily_reward", HttpMethod.POST, Void.class,
+                Map.of(
                         "nick", nick,
-                        "recaptchaToken", recaptchaToken
-                ), Void.class, Map.of(
+                        "recaptchaToken", recaptchaToken),
+                Map.of(
                         400, new DailyRewardWrongRecaptchaTokenException("Invalid recaptcha token!"),
                         404, new DailyRewardDisabledException("Daily reward is disabled!"),
                         403, new DailyRewardAlreadyReceivedException("Daily reward for this nickname is already received!")));
@@ -129,14 +130,14 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
 
     @Override
     public @NotNull SpaceIsResponse<TransactionDetails> getTransactionDetails(@NotNull UUID transactionId) throws NotFoundException {
-        return this.sendRequest("/transaction/info/" + transactionId, HttpMethod.GET, null, TransactionDetails.class, Map.of(
+        return this.sendRequest("/transaction/info/" + transactionId, HttpMethod.GET, TransactionDetails.class,null, Map.of(
                 404, new NotFoundException("Transaction not found!")
         ));
     }
 
     @Override
     public @NotNull SpaceIsResponse<Transaction> initTransaction(@NotNull TransactionRequest transactionRequest) throws TransactionInitException {
-        return this.sendRequest("/transaction/variantPayment", HttpMethod.POST, transactionRequest, Transaction.class, Map.of(
+        return this.sendRequest("/transaction/variantPayment", HttpMethod.POST, Transaction.class, transactionRequest, Map.of(
                 403, new TransactionInitException("Sms code already used!"),
                 404, new TransactionInitException("Invalid sms code!")
         ));
@@ -144,7 +145,7 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
 
     @Override
     public @NotNull SpaceIsResponse<Void> approveTransaction(@NotNull UUID transactionId) throws TransactionApproveException {
-        return this.sendRequest(String.format("/transaction/%s/approve", transactionId), HttpMethod.POST, null, Void.class, Map.of(
+        return this.sendRequest(String.format("/transaction/%s/approve", transactionId), HttpMethod.POST, Void.class, null, Map.of(
             400, new TransactionApproveException("Transaction already approved!")
         ));
     }
