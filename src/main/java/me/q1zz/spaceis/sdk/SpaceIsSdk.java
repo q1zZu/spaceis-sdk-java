@@ -1,8 +1,9 @@
 package me.q1zz.spaceis.sdk;
 
 import me.q1zz.spaceis.sdk.modal.*;
+import me.q1zz.spaceis.sdk.request.TransactionRequest;
+import me.q1zz.spaceis.sdk.request.VoucherGenerateRequest;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
