@@ -78,10 +78,6 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
         return this.gson.fromJson(responseData.toString(), responseType);
     }
 
-    private <T> T sendRequest(@NotNull String path, @NotNull HttpMethod method, @Nullable Object body, @NotNull Type responseType) throws SpaceIsSdkException {
-        return this.sendRequest(path, method, body, responseType, new HashMap<>());
-    }
-
     private <T> SpaceIsResponse<T> sendRequest(@NotNull String path, @NotNull HttpMethod method, @Nullable Object body, @NotNull Class<T> responseType, @NotNull Map<Integer, SpaceIsSdkException> responseActions) throws SpaceIsSdkException {
 
         final TypeToken<?> spaceIsResponse = TypeToken.getParameterized(SpaceIsResponse.class, responseType);
@@ -91,11 +87,7 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
     }
 
     private <T> SpaceIsResponse<T> sendRequest(@NotNull String path, @NotNull HttpMethod method, @Nullable Object body, @NotNull Class<T> responseType) throws SpaceIsSdkException {
-
-        final TypeToken<?> spaceIsResponse = TypeToken.getParameterized(SpaceIsResponse.class, responseType);
-        final Type spaceIsResponseType = spaceIsResponse.getType();
-
-        return this.sendRequest(path, method, body, spaceIsResponseType);
+        return this.sendRequest(path, method, body, responseType, new HashMap<>());
     }
 
 
