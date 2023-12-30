@@ -150,5 +150,22 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
         ));
     }
 
+    @Override
+    public @NotNull SpaceIsResponse<VoucherState> redeemVoucher(@NotNull String nick, @NotNull String code) throws VoucherAlreadyUsedException, VoucherNotFoundException {
+        return this.sendRequest("/voucher", HttpMethod.POST, VoucherState.class,
+                Map.of(
+                        "nick", nick,
+                        "code", code),
+                Map.of(
+                        403, new VoucherAlreadyUsedException("Voucher already used!"),
+                        404, new VoucherNotFoundException("Voucher not found!")
+                ));
+    }
+
+    @Override
+    public @NotNull SpaceIsResponse<VoucherList> generateVoucher(@NotNull VoucherGenerateRequest voucherGenerateRequest) {
+        return this.sendRequest("/voucher/generate", HttpMethod.POST, VoucherList.class, voucherGenerateRequest);
+    }
+
 
 }
