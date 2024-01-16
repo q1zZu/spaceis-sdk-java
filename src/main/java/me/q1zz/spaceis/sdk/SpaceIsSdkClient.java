@@ -71,14 +71,10 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
             throw responseActions.getOrDefault(responseStatus, new SpaceIsSdkException(response));
         }
 
-        System.out.println(responseStatus);
-
         final JsonNode responseBody = response.getBody();
         final Object responseData = responseBody.isArray() ?
                 responseBody.getArray() :
                 responseBody.getObject();
-
-        System.out.println(responseData.toString());
 
         return this.gson.fromJson(responseData.toString(), responseType);
     }
