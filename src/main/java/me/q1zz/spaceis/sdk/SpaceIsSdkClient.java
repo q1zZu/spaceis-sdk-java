@@ -111,21 +111,24 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
     }
 
     @Override
-    public @NotNull SpaceIsResponse<Subpage> getSubpage(@NotNull String slug) throws NotFoundException {
+    @NotNull
+    public SpaceIsResponse<Subpage> getSubpage(@NotNull String slug) throws NotFoundException {
         return this.sendRequest("/subpage/" + slug, HttpMethod.GET, Subpage.class, null, Map.of(
                 404, new NotFoundException("subpage not found!")
         ));
     }
 
     @Override
-    public @NotNull SpaceIsResponse<DailyReward> getDailyReward() throws DailyRewardDisabledException {
+    @NotNull
+    public SpaceIsResponse<DailyReward> getDailyReward() throws DailyRewardDisabledException {
         return this.sendRequest("/daily_reward", HttpMethod.GET, DailyReward.class, null, Map.of(
                 404, new DailyRewardDisabledException("Daily reward is disabled!")
         ));
     }
 
     @Override
-    public @NotNull SpaceIsResponse<Void> redeemDailyReward(@NotNull String nick, @NotNull String recaptchaToken) throws DailyRewardDisabledException, DailyRewardAlreadyReceivedException, DailyRewardWrongRecaptchaTokenException {
+    @NotNull
+    public SpaceIsResponse<Void> redeemDailyReward(@NotNull String nick, @NotNull String recaptchaToken) throws DailyRewardDisabledException, DailyRewardAlreadyReceivedException, DailyRewardWrongRecaptchaTokenException {
         return this.sendRequest("/daily_reward", HttpMethod.POST, Void.class,
                 Map.of(
                         "nick", nick,
@@ -137,14 +140,16 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
     }
 
     @Override
-    public @NotNull SpaceIsResponse<TransactionDetails> getTransactionDetails(@NotNull UUID transactionId) throws NotFoundException {
+    @NotNull
+    public SpaceIsResponse<TransactionDetails> getTransactionDetails(@NotNull UUID transactionId) throws NotFoundException {
         return this.sendRequest("/transaction/info/" + transactionId, HttpMethod.GET, TransactionDetails.class,null, Map.of(
                 404, new NotFoundException("Transaction not found!")
         ));
     }
 
     @Override
-    public @NotNull SpaceIsResponse<Transaction> initTransaction(@NotNull TransactionRequest transactionRequest) throws TransactionInitException {
+    @NotNull
+    public SpaceIsResponse<Transaction> initTransaction(@NotNull TransactionRequest transactionRequest) throws TransactionInitException {
         return this.sendRequest("/transaction/variantPayment", HttpMethod.POST, Transaction.class, transactionRequest, Map.of(
                 403, new TransactionInitException("Sms code already used!"),
                 404, new TransactionInitException("Invalid sms code!")
@@ -152,14 +157,16 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
     }
 
     @Override
-    public @NotNull SpaceIsResponse<Void> approveTransaction(@NotNull UUID transactionId) throws TransactionApproveException {
+    @NotNull
+    public SpaceIsResponse<Void> approveTransaction(@NotNull UUID transactionId) throws TransactionApproveException {
         return this.sendRequest(String.format("/transaction/%s/approve", transactionId), HttpMethod.POST, Void.class, null, Map.of(
             400, new TransactionApproveException("Transaction already approved!")
         ));
     }
 
     @Override
-    public @NotNull SpaceIsResponse<VoucherState> redeemVoucher(@NotNull String nick, @NotNull String code) throws VoucherAlreadyUsedException, VoucherNotFoundException {
+    @NotNull
+    public SpaceIsResponse<VoucherState> redeemVoucher(@NotNull String nick, @NotNull String code) throws VoucherAlreadyUsedException, VoucherNotFoundException {
         return this.sendRequest("/voucher", HttpMethod.POST, VoucherState.class,
                 Map.of(
                         "nick", nick,
@@ -171,12 +178,14 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
     }
 
     @Override
-    public @NotNull SpaceIsResponse<VoucherList> generateVoucher(@NotNull VoucherGenerateRequest voucherGenerateRequest) {
+    @NotNull
+    public SpaceIsResponse<VoucherList> generateVoucher(@NotNull VoucherGenerateRequest voucherGenerateRequest) {
         return this.sendRequest("/voucher/generate", HttpMethod.POST, VoucherList.class, voucherGenerateRequest);
     }
 
     @Override
-    public @NotNull SpaceIsResponse<ServerCommand[]> getServerCommands(@NotNull UUID serverId, @NotNull String serverToken) {
+    @NotNull
+    public SpaceIsResponse<ServerCommand[]> getServerCommands(@NotNull UUID serverId, @NotNull String serverToken) {
         return this.sendRequest(String.format("/server/%s/commands", serverId), HttpMethod.GET, ServerCommand[].class, null,
                 Map.of(
                         "X-SPACEIS-SERVER-TOKEN", serverToken),
@@ -185,7 +194,8 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
     }
 
     @Override
-    public @NotNull SpaceIsResponse<Void> restoreServerCommand(@NotNull UUID serverId, @NotNull String serverToken, @NotNull UUID commandId) throws ServerCommandNotFoundException {
+    @NotNull
+    public SpaceIsResponse<Void> restoreServerCommand(@NotNull UUID serverId, @NotNull String serverToken, @NotNull UUID commandId) throws ServerCommandNotFoundException {
         return this.sendRequest(String.format("/server/%s/commands/%s/restore", serverId, commandId), HttpMethod.POST, Void.class, null,
                 Map.of(
                         "X-SPACEIS-SERVER-TOKEN", serverToken),
