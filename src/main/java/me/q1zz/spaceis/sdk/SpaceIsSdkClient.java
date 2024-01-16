@@ -48,13 +48,15 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
                 .create();
     }
 
-    private <T> T sendRequest(@NotNull String path, @NotNull HttpMethod method, @NotNull Type responseType, @Nullable Object body, @NotNull Map<Integer, SpaceIsSdkException> responseActions) throws SpaceIsSdkException {
+    private <T> T sendRequest(@NotNull String path, @NotNull HttpMethod method, @NotNull Type responseType, @Nullable Object body, @NotNull Map<String, String> headers, @NotNull Map<Integer, SpaceIsSdkException> responseActions) throws SpaceIsSdkException {
 
         final HttpResponse<JsonNode> response = switch (method.name()) {
             case "GET" -> this.unirest.get(path)
+                    .headers(headers)
                     .asJson();
             case "POST", "PUT", "DELETE" -> this.unirest.request(method.name(), path)
                     .body(this.gson.toJson(body))
+                    .headers(headers)
                     .asJson();
             default -> throw new SpaceIsSdkException("Unsupported request method: " + method.name());
         };
@@ -69,20 +71,28 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
             throw responseActions.getOrDefault(responseStatus, new SpaceIsSdkException(response));
         }
 
+        System.out.println(responseStatus);
+
         final JsonNode responseBody = response.getBody();
         final Object responseData = responseBody.isArray() ?
                 responseBody.getArray() :
                 responseBody.getObject();
 
+        System.out.println(responseData.toString());
+
         return this.gson.fromJson(responseData.toString(), responseType);
     }
 
-    private <T> SpaceIsResponse<T> sendRequest(@NotNull String path, @NotNull HttpMethod method, @NotNull Class<T> responseType, @Nullable Object body, @NotNull Map<Integer, SpaceIsSdkException> responseActions) throws SpaceIsSdkException {
+    private <T> SpaceIsResponse<T> sendRequest(@NotNull String path, @NotNull HttpMethod method, @NotNull Class<T> responseType, @Nullable Object body, @NotNull Map<String, String> headers, @NotNull Map<Integer, SpaceIsSdkException> responseActions) throws SpaceIsSdkException {
 
         final TypeToken<?> spaceIsResponse = TypeToken.getParameterized(SpaceIsResponse.class, responseType);
         final Type spaceIsResponseType = spaceIsResponse.getType();
 
-        return this.sendRequest(path, method, spaceIsResponseType, body, responseActions);
+        return this.sendRequest(path, method, spaceIsResponseType, body, headers, responseActions);
+    }
+
+    private <T> SpaceIsResponse<T> sendRequest(@NotNull String path, @NotNull HttpMethod method, @NotNull Class<T> responseType, @Nullable Object body, @NotNull Map<Integer, SpaceIsSdkException> responseActions) throws SpaceIsSdkException {
+        return this.sendRequest(path, method, responseType, body, new HashMap<>(), responseActions);
     }
 
     private <T> SpaceIsResponse<T> sendRequest(@NotNull String path, @NotNull HttpMethod method, @NotNull Class<T> responseType, @Nullable Object body) throws SpaceIsSdkException {
@@ -167,6 +177,25 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
     @Override
     public @NotNull SpaceIsResponse<VoucherList> generateVoucher(@NotNull VoucherGenerateRequest voucherGenerateRequest) {
         return this.sendRequest("/voucher/generate", HttpMethod.POST, VoucherList.class, voucherGenerateRequest);
+    }
+
+    @Override
+    public @NotNull SpaceIsResponse<ServerCommand[]> getServerCommands(@NotNull UUID serverId, @NotNull String serverToken) {
+        return this.sendRequest(String.format("/server/%s/commands", serverId), HttpMethod.GET, ServerCommand[].class, null,
+                Map.of(
+                        "X-SPACEIS-SERVER-TOKEN", serverToken),
+                Map.of()
+        );
+    }
+
+    @Override
+    public @NotNull SpaceIsResponse<Void> restoreServerCommand(@NotNull UUID serverId, @NotNull String serverToken, @NotNull UUID commandId) throws ServerCommandNotFoundException {
+        return this.sendRequest(String.format("/server/%s/commands/%s/restore", serverId, commandId), HttpMethod.POST, Void.class, null,
+                Map.of(
+                        "X-SPACEIS-SERVER-TOKEN", serverToken),
+                Map.of(
+                        404, new ServerCommandNotFoundException("Command not found!")
+        ));
     }
 
 
