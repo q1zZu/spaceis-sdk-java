@@ -226,5 +226,13 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
         ));
     }
 
+    @Override
+    @NotNull
+    public SpaceIsResponse<ServerLatestBuyer[]> getServerLatestBuyers(@NotNull String param, int limit) {
+        return this.sendRequest(String.format("/server/%s/latest_buyers?limit=%s", param, limit), HttpMethod.GET, ServerLatestBuyer[].class, null, Map.of(
+                404, new ServerNotFoundException("Server not found!")
+        ));
+    }
+
 
 }

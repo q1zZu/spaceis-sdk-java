@@ -55,6 +55,9 @@ public interface SpaceIsSdk {
     @NotNull
     SpaceIsResponse<ServerGoal[]> getServerGoals(@NotNull String param);
 
+    @NotNull
+    SpaceIsResponse<ServerLatestBuyer[]> getServerLatestBuyers(@NotNull String param, int limit);
+
 }
 
 
