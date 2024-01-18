@@ -51,6 +51,10 @@ public interface SpaceIsSdk {
 
     @NotNull
     SpaceIsResponse<ServerDetails> getServerDetails(@NotNull UUID serverId);
+
+    @NotNull
+    SpaceIsResponse<ServerGoal[]> getServerGoals(@NotNull String param);
+
 }
 
 

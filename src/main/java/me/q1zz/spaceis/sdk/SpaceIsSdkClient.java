@@ -218,5 +218,13 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
         ));
     }
 
+    @Override
+    @NotNull
+    public SpaceIsResponse<ServerGoal[]> getServerGoals(@NotNull String param) throws ServerNotFoundException {
+        return this.sendRequest(String.format("/server/%s/goals", param), HttpMethod.GET, ServerGoal[].class, null, Map.of(
+                404, new ServerNotFoundException("Server not found!")
+        ));
+    }
+
 
 }
