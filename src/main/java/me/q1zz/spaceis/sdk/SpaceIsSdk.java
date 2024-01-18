@@ -48,6 +48,9 @@ public interface SpaceIsSdk {
 
     @NotNull
     SpaceIsResponse<Server[]> getServers();
+
+    @NotNull
+    SpaceIsResponse<ServerDetails> getServerDetails(@NotNull UUID serverId);
 }
 
 
