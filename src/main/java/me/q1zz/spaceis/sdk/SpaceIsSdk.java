@@ -45,6 +45,9 @@ public interface SpaceIsSdk {
 
     @NotNull
     SpaceIsResponse<Void> restoreServerCommand(@NotNull UUID serverId, @NotNull String serverToken, @NotNull UUID commandId);
+
+    @NotNull
+    SpaceIsResponse<Server[]> getServers();
 }
 
 

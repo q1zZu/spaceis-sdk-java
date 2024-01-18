@@ -204,5 +204,11 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
         ));
     }
 
+    @Override
+    @NotNull
+    public SpaceIsResponse<Server[]> getServers() {
+        return this.sendRequest("/servers", HttpMethod.GET, Server[].class, null);
+    }
+
 
 }
