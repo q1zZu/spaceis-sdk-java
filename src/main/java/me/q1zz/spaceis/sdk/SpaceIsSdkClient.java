@@ -204,5 +204,51 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
         ));
     }
 
+    @Override
+    @NotNull
+    public SpaceIsResponse<Server[]> getServers() {
+        return this.sendRequest("/servers", HttpMethod.GET, Server[].class, null);
+    }
+
+    @Override
+    @NotNull
+    public SpaceIsResponse<ServerDetails> getServerDetails(@NotNull UUID serverId) throws ServerNotFoundException {
+        return this.sendRequest("/server/" + serverId, HttpMethod.GET, ServerDetails.class, null, Map.of(
+                404, new ServerNotFoundException("Server not found!")
+        ));
+    }
+
+    @Override
+    @NotNull
+    public SpaceIsResponse<ServerGoal[]> getServerGoals(@NotNull String param) throws ServerNotFoundException {
+        return this.sendRequest(String.format("/server/%s/goals", param), HttpMethod.GET, ServerGoal[].class, null, Map.of(
+                404, new ServerNotFoundException("Server not found!")
+        ));
+    }
+
+    @Override
+    @NotNull
+    public SpaceIsResponse<ServerLatestBuyer[]> getServerLatestBuyers(@NotNull String param, int limit) {
+        return this.sendRequest(String.format("/server/%s/latest_buyers?limit=%s", param, limit), HttpMethod.GET, ServerLatestBuyer[].class, null, Map.of(
+                404, new ServerNotFoundException("Server not found!")
+        ));
+    }
+
+    @Override
+    @NotNull
+    public SpaceIsResponse<ServerRichestBuyer[]> getServerRichestBuyers(@NotNull String param, int limit) {
+        return this.sendRequest(String.format("/server/%s/richest?limit=%s", param, limit), HttpMethod.GET, ServerRichestBuyer[].class, null, Map.of(
+                404, new ServerNotFoundException("Server not found!")
+        ));
+    }
+
+    @Override
+    @NotNull
+    public SpaceIsResponse<ServerProductDetails> getServerProductDetails(@NotNull String param, @NotNull UUID categoryId, @NotNull UUID productId) throws NotFoundException {
+        return this.sendRequest(String.format("/server/%s/category/%s/product/%s/variants", param, categoryId, productId), HttpMethod.GET, ServerProductDetails.class, null, Map.of(
+            404, new NotFoundException("Server, category or product not found!")
+        ));
+    }
+
 
 }
