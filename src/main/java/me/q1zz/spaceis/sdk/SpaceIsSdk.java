@@ -58,6 +58,9 @@ public interface SpaceIsSdk {
     @NotNull
     SpaceIsResponse<ServerLatestBuyer[]> getServerLatestBuyers(@NotNull String param, int limit);
 
+    @NotNull
+    SpaceIsResponse<ServerRichestBuyer[]> getServerRichestBuyers(@NotNull String param, int limit);
+
 }
 
 
