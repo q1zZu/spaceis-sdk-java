@@ -242,5 +242,13 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
         ));
     }
 
+    @Override
+    @NotNull
+    public SpaceIsResponse<ServerProductDetails> getServerProductDetails(@NotNull String param, @NotNull UUID categoryId, @NotNull UUID productId) throws NotFoundException {
+        return this.sendRequest(String.format("/server/%s/category/%s/product/%s/variants", param, categoryId, productId), HttpMethod.GET, ServerProductDetails.class, null, Map.of(
+            404, new NotFoundException("Server, category or product not found!")
+        ));
+    }
+
 
 }

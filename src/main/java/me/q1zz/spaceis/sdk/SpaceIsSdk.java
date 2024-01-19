@@ -5,7 +5,6 @@ import me.q1zz.spaceis.sdk.request.TransactionRequest;
 import me.q1zz.spaceis.sdk.request.VoucherGenerateRequest;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface SpaceIsSdk {
@@ -60,6 +59,9 @@ public interface SpaceIsSdk {
 
     @NotNull
     SpaceIsResponse<ServerRichestBuyer[]> getServerRichestBuyers(@NotNull String param, int limit);
+
+    @NotNull
+    SpaceIsResponse<ServerProductDetails> getServerProductDetails(@NotNull String param, @NotNull UUID categoryId, @NotNull UUID productId);
 
 }
 
