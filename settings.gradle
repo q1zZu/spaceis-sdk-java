@@ -1,2 +1,5 @@
 rootProject.name = 'spaceis-sdk-java'
 
+// Client
+include 'client'
+
