@@ -1,0 +1,3 @@
+# Settings for JDK
+jdk:
+  - openjdk17
