@@ -18,7 +18,7 @@ Java sdk for [SpaceIs](https://spaceis.pl) e-commerce platform.
 
 # Installation
 
-...
+*soon...*
 
 # SpaceIsSdkClient
 
