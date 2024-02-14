@@ -1,13 +1,31 @@
-plugins {
-    id 'java'
-    id 'maven-publish'
+allprojects {
+    group 'me.q1zz.spaceis.sdk'
+    version '0.2'
 }
 
-allprojects {
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        withSourcesJar()
+        withJavadocJar()
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId project.group
+                artifactId project.name
+                version project.version
+                from components.java
+            }
+        }
     }
 
 }
+
