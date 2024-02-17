@@ -18,7 +18,34 @@ Java sdk for [SpaceIs](https://spaceis.pl) e-commerce platform.
 
 # Installation
 
-*soon...*
+[![](https://jitpack.io/v/q1zZu/spaceis-sdk-java.svg)](https://jitpack.io/#q1zZu/spaceis-sdk-java)
+
+**Maven**
+```xml
+<repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+</repository>
+```
+
+```xml
+<dependency>
+    <groupId>com.github.q1zzu</groupId>
+    <artifactId>spaceis-sdk-java</artifactId>
+    <version>{VERSION}</version>
+</dependency>
+```
+
+**Gradle**
+```groovy
+maven { url 'https://jitpack.io' }
+```
+
+```groovy
+implementation 'com.github.q1zzu:spaceis-sdk-java:{VERSION}'
+```
+
+> Replace `{VERSION}` with latest version from [releases](https://github.com/q1zZu/spaceis-sdk-java/releases) or [jitpack](https://jitpack.io/#q1zZu/spaceis-sdk-java)
 
 # SpaceIsSdkClient
 
@@ -31,12 +58,9 @@ final SpaceIsSdk spaceIsSdkClient = new SpaceIsSdkClient(API_KEY);
 // Client with base url and api key.
 final SpaceIsSdk spaceIsSdkClient = new SpaceIsSdkClient(BASE_URL, API_KEY);
 
-// Client with custom configuration for Unirest.
-final SpaceIsSdk spaceIsSdkClient = new SpaceIsSdkClient(CONFIG);
-
 ```
 
-Examples for usage can be found at: [wiki](https://github.com/q1zZu/spaceis-sdk-java/wiki)
+> Examples for usage can be found at: [wiki](https://github.com/q1zZu/spaceis-sdk-java/wiki)
 
 # Support and contact
 - Discord: [Q-CODES](https://bit.ly/Q-CODES) *(create ticket)*
