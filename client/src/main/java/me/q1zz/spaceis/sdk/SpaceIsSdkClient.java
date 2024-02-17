@@ -54,26 +54,16 @@ public class SpaceIsSdkClient implements SpaceIsSdk {
     /**
      * Constructs a SpaceIsSdkClient instance with the provided base URL and API key.
      *
-     * @param baseUrl the base URL of the SpaceIs API
      * @param apiKey the API key used for authentication
+     * @param baseUrl the base URL of the SpaceIs API
      */
     public SpaceIsSdkClient(@NotNull String baseUrl, @NotNull String apiKey) {
-        this(new Config()
+        this.unirest = new UnirestInstance(new Config()
                 .defaultBaseUrl(baseUrl)
-                .addDefaultHeader("Authorization", "Bearer " + apiKey)
-        );
-    }
-
-    /**
-     * Constructs a SpaceIsSdkClient instance with the provided configuration for Unirest.
-     *
-     * @param config the configuration for the Unirest instance used by the SpaceIsSdkClient
-     */
-    public SpaceIsSdkClient(@NotNull Config config) {
-        this.unirest = new UnirestInstance(config
                 .addDefaultHeader("User-Agent", USER_AGENT)
                 .addDefaultHeader("Content-Type", "application/json")
                 .addDefaultHeader("Accept", "application/json")
+                .addDefaultHeader("Authorization", "Bearer " + apiKey)
                 .connectTimeout(5000)
                 .enableCookieManagement(false)
         );
