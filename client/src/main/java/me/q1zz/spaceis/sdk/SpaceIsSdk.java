@@ -1,6 +1,11 @@
 package me.q1zz.spaceis.sdk;
 
 import me.q1zz.spaceis.sdk.modal.*;
+import me.q1zz.spaceis.sdk.modal.server.*;
+import me.q1zz.spaceis.sdk.modal.transaction.Transaction;
+import me.q1zz.spaceis.sdk.modal.transaction.TransactionDetails;
+import me.q1zz.spaceis.sdk.modal.voucher.VoucherList;
+import me.q1zz.spaceis.sdk.modal.voucher.VoucherState;
 import me.q1zz.spaceis.sdk.request.TransactionRequest;
 import me.q1zz.spaceis.sdk.request.VoucherGenerateRequest;
 import org.jetbrains.annotations.NotNull;
