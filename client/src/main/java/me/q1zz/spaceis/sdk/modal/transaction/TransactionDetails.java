@@ -1,4 +1,4 @@
-package me.q1zz.spaceis.sdk.modal;
+package me.q1zz.spaceis.sdk.modal.transaction;
 
 import lombok.Data;
 
