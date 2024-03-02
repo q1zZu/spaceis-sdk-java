@@ -1,6 +1,6 @@
 allprojects {
     group 'me.q1zz.spaceis.sdk'
-    version '0.4'
+    version '0.5'
 }
 
 subprojects {
