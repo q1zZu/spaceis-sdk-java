@@ -8,6 +8,8 @@ import me.q1zz.spaceis.sdk.adapter.BooleanAdapter;
 import me.q1zz.spaceis.sdk.exception.*;
 import me.q1zz.spaceis.sdk.modal.*;
 import me.q1zz.spaceis.sdk.modal.server.*;
+import me.q1zz.spaceis.sdk.modal.voucher.VoucherList;
+import me.q1zz.spaceis.sdk.modal.voucher.VoucherState;
 import me.q1zz.spaceis.sdk.request.TransactionRequest;
 import me.q1zz.spaceis.sdk.request.VoucherGenerateRequest;
 import org.jetbrains.annotations.NotNull;
