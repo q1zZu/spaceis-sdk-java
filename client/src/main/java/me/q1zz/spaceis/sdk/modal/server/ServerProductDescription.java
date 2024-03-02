@@ -1,4 +1,4 @@
-package me.q1zz.spaceis.sdk.modal;
+package me.q1zz.spaceis.sdk.modal.server;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
