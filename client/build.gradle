@@ -15,8 +15,8 @@ dependencies {
     implementation 'com.konghq:unirest-java:3.14.5'
 
     // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.32'
-    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
     // Annotations
     implementation 'org.jetbrains:annotations:24.1.0'
